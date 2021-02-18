@@ -6,7 +6,7 @@ import weightedunion.WeightedUnionImpl;
 public class Main {
     public static void main(String[] args) {
         int arraySize = 10;
-        System.out.println("*****************Quick Union****************");
+        System.out.println("*****************Quick Union*************************");
         QuickUnionImpl quickUnion = new QuickUnionImpl(arraySize);
         quickUnion.union(0,1);
         quickUnion.union(5,0);
@@ -19,7 +19,7 @@ public class Main {
         quickUnion.union(1,8);
         //quickUnion.union(9,7); //Bruges til at tjekke - da 9 og 7 allerede er forbundet gennem træerne
         System.out.println("1 and 5 connected: " + quickUnion.connected(1,5));
-        System.out.println("*****************Quick Union****************");
+        System.out.println("*****************Quick Union*************************");
 
         System.out.println("*****************Weighted Quick Union****************");
         WeightedUnionImpl weightedUnion = new WeightedUnionImpl(arraySize);
