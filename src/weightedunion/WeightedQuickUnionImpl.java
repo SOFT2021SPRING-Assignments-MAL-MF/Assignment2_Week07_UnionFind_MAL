@@ -1,19 +1,24 @@
-package quickunion;
+package weightedunion;
 
-public class QuickUnionImpl implements QuickUnion{
+public class WeightedQuickUnionImpl implements WeightedQuickUnion {
     private int[] id;
+    private int[] countRoot;
     private int count;
 
-    public QuickUnionImpl(int n) {
+    public WeightedQuickUnionImpl(int n) {
         //Initialisere arrayet med et bestemt antal pladser n
         id = new int[n];
+
+        //Initialisere arrayet med et bestemt antal pladser n
+        countRoot = new int[n];
 
         //Sætter størrelsen på arrayet til count ud fra det angivne n
         count = n;
 
-        //Indsætter værdier i alle pladser af det angivne array
+        //Indsætter værdier i alle pladser af de angivne arrays
         for (int i = 0; i < n; i++) {
             id[i] = i;
+            countRoot[i] = 1; //Laver et array til at tælle antal punkter på en root
         }
     }
 
@@ -29,10 +34,21 @@ public class QuickUnionImpl implements QuickUnion{
         int rootP = find(p);
         int rootQ = find(q);
 
-        //Sætter root fra punkt p til root for punkt q - f.eks. laves der ikke en direkte union mellem root 1 og root 8
-        //Men i stedet sættes denne automatisk, hvis der laves en union for hvert træ - f.eks. punkt 9 til punkt 7
-        //Så laves automatisk en union mellem root 1 og root 8.
-        id[rootP] = rootQ;
+        //Finder antal punkter på sin root ud fra arrayet der styre antallet af punkter på en root - countRoot[].
+        int rootPcount = countRoot[rootP];
+        int rootQcount = countRoot[rootQ];
+
+        //Tjek om hvilket root som har flest punkter på sig, og dermed skal være øverst og have et mindre træ
+        //koblet på sig. Det sker ved at tjekke på hvor mange punkter der er på hver root i arrayet countRoot[],
+        //hvorefter man forbinder root på den måde at det største træ er øverst - hvorefter man tager antallet
+        //af forbindelser fra undertræet og sætter på sit eget i countRoot arrayet.
+        if(countRoot[rootP] > countRoot[rootQ]){
+            id[rootQ] = rootP;
+            countRoot[rootP] += rootQcount;
+        } else {
+            id[rootP] = rootQ;
+            countRoot[rootQ] += rootPcount;
+        }
 
         //Tæller mulige kombinationer ned med 1
         count--;
